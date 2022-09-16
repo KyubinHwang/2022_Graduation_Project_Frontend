@@ -17,6 +17,7 @@
 - Back-end : Flask, Mysql
 - AI : Tensorflow, Keras, OpenCV
 - Design : Figma
+- Deploy : AWS Ec2, Vercel
 
 ## 동작 방식
 <img width="1153" alt="스크린샷 2022-07-17 오후 11 50 36" src="https://user-images.githubusercontent.com/70309113/179404631-2a6105c7-544c-4d6c-80fc-32a7232209ee.png">
