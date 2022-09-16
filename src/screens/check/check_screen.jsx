@@ -1,25 +1,18 @@
 import React from 'react';
-import { useState } from 'react';
 import guide1 from '../../assets/images/guide1.svg';
 import style from './check.module.scss';
 import Webcam from 'react-webcam';
 import Switch from '@mui/material/Switch';
-
+import useCheckVideo from '../../hooks/useCheckVideo';
 
 function Check () {
-  const [isShowVideo, setIsShowVideo] = useState(false);
+  const {isShowVideo, startCam} = useCheckVideo();
 
   const videoConstraints = {
     width: 1280,
     height: 720,
     facingMode: "user"
   };
-
-  const startCam = () => {
-    !isShowVideo ?
-    setIsShowVideo(true)
-    :setIsShowVideo(false);
-  }
 
   const goTo = () => {
     window.location.assign('/guide')
