@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    font-family: 'NanumGothic';
 }
 .article{
     width: 30%;
@@ -39,12 +40,11 @@
         background: #0073fe;
     }
 }
-.imgBox{
+.slideBox{
+    height: 400px;
     display: flex;
-    justify-content : center;
-}
-.imagespace{
-    width: 60%;
-    height : 300px;
-    background: #EAFFF6;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
 }

@@ -35,14 +35,14 @@ class Guide extends Component {
                 </SwiperSlide>
                 <SwiperSlide className={style.imgBox}>
                     <div className={style.imagespace}>
-                    표정, 시선, 습관어 사용을 분석하여 결과를 제공합니다. <br/>
-                    실제 기업 문항들에 대한 답변을 대비할 수 있습니다.
+                    90초동안 질문에 대해서 답변해주세요.<br/>
+                    30초 미만의 시간이 남았을 때 다음 질문으로 넘어갈 수 있습니다.
                     </div>
                 </SwiperSlide>
                 <SwiperSlide className={style.imgBox}>
                     <div className={style.imagespace}>
-                    표정, 시선, 습관어 사용을 분석하여 결과를 제공합니다. <br/>
-                    실제 기업 문항들에 대한 답변을 대비할 수 있습니다.
+                    중도에 면접을 포기하고, 다시 시작하고 싶으신 경우에는 <br/>
+                    다시하기 버튼을 클릭하시면 메인 화면으로 돌아가실 수 있습니다.
                     </div>
                 </SwiperSlide>  
                 <SwiperSlide className={style.imgBox}>

@@ -5,6 +5,9 @@ import frame1 from '../../assets/images/frame1.svg';
 import frame2 from '../../assets/images/frame2.svg';
 import frame3 from '../../assets/images/frame3.svg';
 import frame4 from '../../assets/images/frame4.svg';
+import main1 from '../../assets/images/main_1.svg';
+import main2 from '../../assets/images/main_2.svg';
+import main3 from '../../assets/images/main_3.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Autoplay } from "swiper";
 import 'swiper/scss'
@@ -50,28 +53,31 @@ function Main () {
           }}
         >
           <SwiperSlide>
-            <div className={style.imgBox}>
-              <div className={style.imagespace} />
+            <div className={style.slideBox}>
+              <img src={main1} style={{width: '500px'}} alt=""/>
+              <div>
+                ‘면접을 부탁해’에 오신 것을 환영합니다! <br/>
+                ‘면접을 부탁해’는 ‘AI 면접 준비 프로그램’입니다.
+              </div>
             </div>
-            <br/>
-            ‘면접을 부탁해’에 오신 것을 환영합니다! <br/>
-            ‘면접을 부탁해’는 ‘AI 면접 준비 프로그램’입니다.
           </SwiperSlide>
           <SwiperSlide>
-            <div className={style.imgBox}>
-              <div className={style.imagespace} />
+            <div className={style.slideBox}>
+              <img src={main2} style={{width: '400px'}} alt=""/>
+              <div>
+                표정, 시선, 습관어 사용을 분석하여 결과를 제공합니다. <br/>
+                실제 기업 문항들에 대한 답변을 대비할 수 있습니다.
+              </div>  
             </div>
-            <br/>
-            표정, 시선, 습관어 사용을 분석하여 결과를 제공합니다. <br/>
-            실제 기업 문항들에 대한 답변을 대비할 수 있습니다.
           </SwiperSlide>
           <SwiperSlide>
-            <div className={style.imgBox}>
-              <div className={style.imagespace} />
+            <div className={style.slideBox}>
+              <img src={main3} style={{width: '400px'}} alt=""/>
+              <div>
+                취업을 위한 한걸음을 나서기 위해 저희와 함께 하세요! <br/>
+                좋은 결과를 위한 모의 면접을 무제한으로 연습하세요!
+              </div>
             </div>
-            <br/>
-            취업을 위한 한걸음을 나서기 위해 저희와 함께 하세요! <br/>
-            좋은 결과를 위한 모의 면접을 무제한으로 연습하세요!
           </SwiperSlide>  
         </Swiper>
         <div style={{display : 'flex', justifyContent : 'space-between'}}> 
