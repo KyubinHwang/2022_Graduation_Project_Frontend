@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    font-family: 'NanumGothic';
+    font-family: 'NotoSansKR';
 }
 .article{
     width: 30%;
@@ -15,16 +15,11 @@
     place-content: center;
 }
 .article1{
-    font-family: 'Noto Sans KR';
-    font-style: normal;
-    font-weight: 700;
+    font-family: 'NotoSansKR-Bold';
     font-size: 60px;
     color: #000000;
 }
 .article2{
-    font-family: 'Noto Sans KR';
-    font-style: normal;
-    font-weight: 400;
     font-size: 20px;
 }
 .button{

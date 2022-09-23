@@ -1,16 +1,24 @@
 @font-face {
-    font-family: 'NanumGothic';
-    src: url('./assets/fonts/NanumGothic.otf') format('woff2-variations');
+    font-family: 'NotoSansKR';
+    src: url('./assets/fonts/NotoSansKR-Black.otf') format('woff2-variations');
 }
 @font-face {
-    font-family: 'NanumGothicBold';
-    src: url('./assets/fonts/NanumGothicBold.otf') format('woff2-variations');
+    font-family: 'NotoSansKR-Bold';
+    src: url('./assets/fonts/NotoSansKR-Bold.otf') format('woff2-variations');
 }
 @font-face {
-    font-family: 'NanumGothic';
-    src: url('./assets/fonts/NanumGothicExtraBold.otf') format('woff2-variations');
+    font-family: 'NotoSansKR-Light';
+    src: url('./assets/fonts/NotoSansKR-Light.otf') format('woff2-variations');
 }
 @font-face {
-    font-family: 'NanumGothic';
-    src: url('./assets/fonts/NanumGothicLight.otf') format('woff2-variations');
+    font-family: 'NotoSansKR-Medium';
+    src: url('./assets/fonts/NotoSansKR-Medium.otf') format('woff2-variations');
+}
+@font-face {
+    font-family: 'NotoSansKR-Regular';
+    src: url('./assets/fonts/NotoSansKR-Regular.otf') format('woff2-variations');
+}
+@font-face {
+    font-family: 'NotoSansKR-Thin';
+    src: url('./assets/fonts/NotoSansKR-Thin.otf') format('woff2-variations');
 }
