@@ -27,7 +27,7 @@ const Header = () => {
             <button onClick={onClick} className={style.button}>다음 질문</button>
           </div>
           <div className={style.questionBox}>
-            <label>Q{question}. {content.content} </label>
+            <label>Q{question}. {content} </label>
           </div>
           <div>
             <label style={{fontWeight : 'bold', color:'white'}}> 빈자리 </label>
