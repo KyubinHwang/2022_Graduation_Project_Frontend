@@ -21,18 +21,23 @@ const Header = () => {
       <div>
         <img src={guide3} className={style.currentPage} alt="profile" />
         <div className={style.box2}>
-          <div>
+          <div style={{width : '130px'}}>
             <label style={{fontWeight : 'bold'}}> {thinking ? "생각시간" : "답변시간"} </label>
             <h2>{second}</h2>
             <button onClick={onClick} className={style.button}>다음 질문</button>
           </div>
           <div className={style.questionBox}>
-            <label>Q{question}. {content} </label>
+            <label className={style.fadein}>Q{question}. {content} </label>
           </div>
-          <div>
-            <label style={{fontWeight : 'bold', color:'white'}}> 빈자리 </label>
-            <h2 style={{fontWeight : 'bold', color:'white'}}>{second}</h2>
-            <button onClick={() => setRetryShow(true)} className={style.button}>종료하기</button>
+          <div style={{display: 'flex', flexDirection : 'column', alignItems : 'center'}}>
+            <div className={style.recording}>
+              {
+                thinking ?
+                <label style={{fontSize : '20px', fontWeight : 'bold'}}>⚪️ Waiting</label>
+                : <label style={{color : 'red', fontSize : '20px', fontWeight : 'bold'}}>🔴 Recording</label>
+              }
+            </div>
+            <button onClick={() => setRetryShow(true)} style={{marginTop : '20px'}} className={style.button}>종료하기</button>
             <EndButton
               show={retryShow}
               onHide={() => setRetryShow(false)}

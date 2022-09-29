@@ -71,7 +71,6 @@ const useTestTimer = () => {
         axios.get(url + `${question}`)
         .then(
             response => {
-                console.log(response.data.text)
                 setContent(response.data.text)
             }
         );
