@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import guide3 from '../../assets/images/guide3.svg';
+import wait from '../../assets/images/waiting.svg';
+import record from '../../assets/images/recording.svg';
 import style from './test.module.scss';
 import EndButton from '../../components/test/endButton';
 import EndModal from '../../components/test/endModal';
@@ -21,7 +23,7 @@ const Header = () => {
       <div>
         <img src={guide3} className={style.currentPage} alt="profile" />
         <div className={style.box2}>
-          <div style={{width : '130px'}}>
+          <div style={{width : '150px'}}>
             <label style={{fontWeight : 'bold'}}> {thinking ? "생각시간" : "답변시간"} </label>
             <h2>{second}</h2>
             <button onClick={onClick} className={style.button}>다음 질문</button>
@@ -30,14 +32,13 @@ const Header = () => {
             <label className={style.fadein}>Q{question}. {content} </label>
           </div>
           <div style={{display: 'flex', flexDirection : 'column', alignItems : 'center'}}>
-            <div className={style.recording}>
-              {
-                thinking ?
-                <label style={{fontSize : '20px', fontWeight : 'bold'}}>⚪️ Waiting</label>
-                : <label style={{color : 'red', fontSize : '20px', fontWeight : 'bold'}}>🔴 Recording</label>
-              }
-            </div>
-            <button onClick={() => setRetryShow(true)} style={{marginTop : '20px'}} className={style.button}>종료하기</button>
+            {
+              thinking ?
+              <img src={wait} style={{width: '150px'}} alt="wait" />
+              : 
+              <img src={record} style={{width: '150px'}} alt="record" />
+            }
+            <button onClick={() => setRetryShow(true)} className={style.button}>종료하기</button>
             <EndButton
               show={retryShow}
               onHide={() => setRetryShow(false)}
