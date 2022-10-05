@@ -8,6 +8,7 @@ import EndButton from '../../components/test/endButton';
 import EndModal from '../../components/test/endModal';
 import useTestTimer from '../../hooks/useTestTimer';
 
+
 const Header = () => {
   const {
     question, second, thinking,
@@ -17,6 +18,7 @@ const Header = () => {
   } = useTestTimer();
   
   const [retryShow, setRetryShow] = useState(false);
+  
 
   return(
     <>
@@ -56,14 +58,10 @@ const Header = () => {
 
 
 function Test (){
+
   return (
     <div className={style.box}>
       <Header/>
-      <div className={style.cameraDisplay}>
-        <div className={style.cameraScreen}>
-          <h3>렌더링한 영상 화면</h3>
-        </div>
-      </div>
     </div>
   );
 }
