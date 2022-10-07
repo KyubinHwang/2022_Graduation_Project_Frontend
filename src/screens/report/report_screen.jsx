@@ -17,25 +17,27 @@ function Report () {
   };
 
   return (
-      <div className={style.box}>
-        <img src={guide4} className={style.currentPage} alt="profile" />
-          {
-            result === 0
-            ?
-            <div
-              style={{
-                position: "fixed",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <BarLoader
-                color="#0073fe"
-                radius={2}
-              />
-            </div>
-            : <div className={style.reportForm}>
+    <>
+      {
+        result == 1
+        ?
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <BarLoader
+            color="#0073fe"
+            radius={2}
+          />
+        </div>
+        :
+        <div className={style.box}>
+          <img src={guide4} className={style.currentPage} alt="profile" />
+          <div className={style.reportForm}>
             <Tabs
               defaultActiveKey="evaluate1"
             >
@@ -47,9 +49,10 @@ function Report () {
               </Tab>
             </Tabs>
           </div>
-          }
-        <button className={style.button} onClick={goTo}>처음 화면으로 돌아가기</button>
-      </div>
+          <button className={style.button} onClick={goTo}>처음 화면으로 돌아가기</button>
+        </div>
+      }
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import guide3 from '../../assets/images/guide3.svg';
 import wait from '../../assets/images/waiting.svg';
 import record from '../../assets/images/recording.svg';
@@ -7,7 +7,7 @@ import style from './test.module.scss';
 import EndButton from '../../components/test/endButton';
 import EndModal from '../../components/test/endModal';
 import useTestTimer from '../../hooks/useTestTimer';
-
+import axios from 'axios';
 
 const Header = () => {
   const {
@@ -19,7 +19,6 @@ const Header = () => {
   
   const [retryShow, setRetryShow] = useState(false);
   
-
   return(
     <>
       <div>
@@ -56,12 +55,78 @@ const Header = () => {
   );
 }
 
+const CONSTRAINTS = { video: true };
 
 function Test (){
+  const videoRef = useRef(null);
+  let videoMediaStream = null;
+
+  const startVideo = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia(CONSTRAINTS);
+    if (videoRef && videoRef.current && !videoRef.current.srcObject) {
+      videoRef.current.srcObject = stream;
+      videoMediaStream = stream;
+    }
+  };
+
+  let videoRecorder = null;
+  let recordedVideoURL = null;
+  let videoBlob = null;
+
+  const VideoCaptureStart = () => {
+    if (navigator.mediaDevices.getUserMedia) {
+      console.log("video capture start");
+      let videoData = [];
+
+      videoRecorder = new MediaRecorder(videoMediaStream, {
+        mimeType: "video/webm; codecs=vp9"    
+      });  
+      videoRecorder.ondataavailable = event => {
+        if(event.data?.size > 0){
+          videoData.push(event.data);
+        }} 
+        videoRecorder.onstop = () => {
+          videoBlob = new Blob(videoData, {type: "video/webm"});
+          recordedVideoURL = window.URL.createObjectURL(videoBlob); // 이벤트 실행 시에 서버로 파일 POST      
+          sendAvi(videoBlob);
+          console.log("video capture end");    
+        } 
+        videoRecorder.start();  
+      }
+    };
+
+    const VideoCaptureEnd = () => {
+      if(videoRecorder){
+        videoRecorder.stop();
+        videoRecorder = null;
+      }
+    };
+
+    const sendAvi = blob => {
+      if (blob == null) return;
+      let filename = new Date().toString() + ".avi";  
+      const file = new File([blob], filename);   
+      let fd = new FormData();  
+      fd.append("fname", filename);  
+      fd.append("file", file);   
+      axios.post('',{
+
+      }).then(()=>{
+
+      }).catch((err)=> {
+
+      })
+    }
 
   return (
     <div className={style.box}>
       <Header/>
+      <video autoPlay ref={videoRef} />
+      <div>
+        <button onClick={startVideo}>웹캠 켜기</button>
+        <button onClick={VideoCaptureStart}>녹화</button>
+        <button onClick={VideoCaptureEnd}>녹화 종료</button>
+      </div>
     </div>
   );
 }
