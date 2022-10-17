@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const useTestTimer = () => {
     const [question, setQuestion] = useState(1);
     const [second, setSecond] = useState(30);
