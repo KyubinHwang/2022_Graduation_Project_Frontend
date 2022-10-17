@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
-const url = ''
+// const url = ''
 
 const useReportResult = () => {
     const [result, setResult] = useState(0);

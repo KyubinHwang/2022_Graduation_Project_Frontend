@@ -19,7 +19,7 @@ function Report () {
   return (
     <>
       {
-        result == 1
+        result === 1
         ?
         <div
           style={{

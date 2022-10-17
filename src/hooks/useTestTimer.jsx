@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
-
 const useTestTimer = () => {
     const [question, setQuestion] = useState(1);
-    const [second, setSecond] = useState(30);
+    const [second, setSecond] = useState(3);
     const [secondCheck, setSecondCheck] = useState(false);
     const [thinking, setThinking] = useState(true);
     const [endShow, setEndShow] = useState(false);
@@ -24,7 +22,7 @@ const useTestTimer = () => {
             else{
                 if(question < 5){
                 setQuestion(question + 1);
-                setSecond(30);
+                setSecond(3);
                 setThinking(true);
                 setSecondCheck(!secondCheck);
                 }
@@ -53,12 +51,12 @@ const useTestTimer = () => {
             if(second === -1){
                 setSecondCheck(!secondCheck);
                 if(secondCheck){
-                    setSecond(30);
+                    setSecond(3);
                     setThinking(true);
                     setQuestion(question + 1);
                 }
                 else{
-                    setSecond(90);
+                    setSecond(9);
                     setThinking(false);
                 }
             }
