@@ -121,6 +121,13 @@ function Test (){
     })
   }
 
+  const play2 = ()=>{
+    const video = new MediaRecorder(recordedVideoURL);
+    video.loop = false;
+    video.volume = 1;
+    video.play();
+  }
+
   const AudioRecord = () => {
     const [stream, setStream] = useState();
     const [media, setMedia] = useState();
@@ -232,6 +239,7 @@ function Test (){
       <div>
         <button onClick={VideoCaptureStart}>녹화</button>
         <button onClick={VideoCaptureEnd}>녹화 종료</button>
+        <button onClick={play2}>재생</button>
       </div>
       <AudioRecord/>
     </div>
