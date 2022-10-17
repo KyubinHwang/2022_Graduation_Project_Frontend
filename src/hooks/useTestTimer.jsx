@@ -9,7 +9,7 @@ const useTestTimer = () => {
     const [endShow, setEndShow] = useState(false);
     const [content, setContent] = useState("");
 
-    const url = 'http://15.164.231.34:8000/question?no='
+    const url = 'https://api.interview-please.ml/question?no='
 
     const onClick = () => {
         if(thinking){
