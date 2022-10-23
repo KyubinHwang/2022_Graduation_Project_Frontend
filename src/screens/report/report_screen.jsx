@@ -7,7 +7,6 @@ import style from './report.module.scss';
 import Total from '../../components/report/totalAssesment';
 import Partial from '../../components/report/partialAssesment';
 import useReportResult from '../../hooks/useReportResult';
-import BarLoader from "react-spinners/BarLoader";
 
 function Report () {
   const {result} = useReportResult();
@@ -29,10 +28,6 @@ function Report () {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <BarLoader
-            color="#0073fe"
-            radius={2}
-          />
         </div>
         :
         <div className={style.box}>
