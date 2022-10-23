@@ -4,9 +4,6 @@ import style from './check.module.scss';
 import Webcam from 'react-webcam';
 import Switch from '@mui/material/Switch';
 import useCheckVideo from '../../hooks/useCheckVideo';
-import axios from 'axios';
-
-axios.defaults.withCredentials = true;
 
 function Check () {
   const {isShowVideo, startCam} = useCheckVideo();
