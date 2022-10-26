@@ -21,13 +21,13 @@ const useTestTimer = () => {
             }
             else{
                 if(question < 5){
-                setQuestion(question + 1);
-                setSecond(3);
-                setThinking(true);
-                setSecondCheck(!secondCheck);
+                    setQuestion(question + 1);
+                    setSecond(3);
+                    setThinking(true);
+                    setSecondCheck(!secondCheck);
                 }
                 else{
-                setEndShow(true);
+                    setEndShow(true);
                 }
             }
         }
