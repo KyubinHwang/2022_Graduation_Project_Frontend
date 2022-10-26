@@ -81,13 +81,13 @@ function Test (){
       videoRecorder = new MediaRecorder(videoMediaStream, {
         mimeType: "video/webm; codecs=vp9",
       });  
-      videoRecorder.ondataavailable = event => {
-        if(event.data?.size > 0){
+      videoRecorder.ondataavailable = (event) => {
+        if (event.data?.size > 0) {
           videoData.push(event.data);
         }
       } 
       videoRecorder.onstop = () => {
-        videoBlob = new Blob(videoData, {type: "video/mp4"});
+        videoBlob = new Blob(videoData, {type: "video/webm"});
         recordedVideoURL = window.URL.createObjectURL(videoBlob); // 이벤트 실행 시에 서버로 파일 POST  
         sendAvi(videoBlob);
         console.log('녹화 완료');
@@ -105,7 +105,7 @@ function Test (){
 
   const sendAvi = (blob) => {
     if (blob == null) return;
-    let filename = "실험이요" + ".mp4";  
+    let filename = "test1" + ".webm";  
     let fd = new FormData();
     fd.append('data', blob, filename);
 
@@ -216,6 +216,19 @@ function Test (){
     );
   };
 
+  const downloadBtn = () => {
+    if (recordedVideoURL) {
+      const link = document.createElement("a");
+      document.body.appendChild(link);
+      // 녹화된 영상의 URL을 href 속성으로 설정
+      link.href = recordedVideoURL;
+      // 저장할 파일명 설정
+      link.download = "video.webm";
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
   useEffect(()=>{
     startVideo();
   },[]);
@@ -223,10 +236,11 @@ function Test (){
   return (
     <div className={style.box}>
       <Header/>
-      <video id={style.videoElement} autoPlay ref={videoRef} />
+      <video id={style.videoElement} autoPlay ref={videoRef}/>
       <div>
         <button onClick={VideoCaptureStart}>녹화</button>
         <button onClick={VideoCaptureEnd}>녹화 종료</button>
+        <button id='download-btn' onClick={downloadBtn}>재생</button>
       </div>
       <AudioRecord/>
     </div>

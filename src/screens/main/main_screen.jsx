@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import style from './main.module.scss';
 import useScrollFadeIn from '../../hooks/useScrollFadeIn';
 import frame1 from '../../assets/images/frame1.svg';
@@ -8,7 +8,6 @@ import frame4 from '../../assets/images/frame4.svg';
 import main1 from '../../assets/images/main_1.svg';
 import main2 from '../../assets/images/main_2.svg';
 import main3 from '../../assets/images/main_3.svg';
-import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Autoplay } from "swiper";
 import 'swiper/scss'
@@ -27,19 +26,12 @@ function Main () {
     window.location.assign('./check')
   };
 
-  useEffect(()=> {
-    axios.get('https://api.interview-please.ml').then((res)=>{
-    console.log(res)
-    })
-  });
-
   return (
     <div className={style.box}>
       <div className={style.article} {...animatedItem[0]}> 
         <div style={{textAlign : 'left'}}>
           <p className={style.article1}>면접을 부탁해</p>
           <p className={style.article2}>합격을 위해 연습해 보세요!</p>
-          
         </div>
         <div>
           <button className={style.button} onClick={goTo}>바로 시작하기</button>
