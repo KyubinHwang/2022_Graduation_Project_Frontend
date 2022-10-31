@@ -1,118 +1,80 @@
 import React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+async function requestRecorder() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  return new MediaRecorder(stream);
+}
+
 const AudioRecord = () => {
-    const [stream, setStream] = useState();
-    const [media, setMedia] = useState();
-    const [onRec, setOnRec] = useState(true);
-    const [source, setSource] = useState();
-    const [analyser, setAnalyser] = useState();
-    const [audioUrl, setAudioUrl] = useState();
-    const [sound, setSound] = useState();
-  
-    const onRecAudio = () => {
-      // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
-      const analyser = audioCtx.createScriptProcessor(0, 1, 1);
-      setAnalyser(analyser);
-  
-      function makeSound(stream) {
-        // 내 컴퓨터의 마이크나 다른 소스를 통해 발생한 오디오 스트림의 정보를 보여준다.
-        const source = audioCtx.createMediaStreamSource(stream);
-        setSource(source);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
-      }
-      // 마이크 사용 권한 획득
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
-        setStream(stream);
-        setMedia(mediaRecorder);
-        makeSound(stream);
-  
-        analyser.onaudioprocess = function (e) {
-          // 3분(180초) 지나면 자동으로 음성 저장 및 녹음 중지
-          if (e.playbackTime > 180) {
-            stream.getAudioTracks().forEach(function (track) {
-              track.stop();
-            });
-            mediaRecorder.stop();
-            // 메서드가 호출 된 노드 연결 해제
-            analyser.disconnect();
-            audioCtx.createMediaStreamSource(stream).disconnect();
-  
-            mediaRecorder.ondataavailable = function (e) {
-              setAudioUrl(e.data);
-              setOnRec(true);
-            };
-          } else {
-            setOnRec(false);
-          }
-        };
-      });
-    };
-  
-    // 사용자가 음성 녹음을 중지했을 때
-    const offRecAudio = () => {
-      // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
-      media.ondataavailable = function (e) {
-        setAudioUrl(e.data);
-        setOnRec(true);
-      };
-  
-      // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
-      stream.getAudioTracks().forEach(function (track) {
-        track.stop();
-      });
-  
-      // 미디어 캡처 중지
-      media.stop();
-      // 메서드가 호출 된 노드 연결 해제
-      analyser.disconnect();
-      source.disconnect();
-    };
-  
-    const onSubmitAudioFile = useCallback(() => {
-      if (audioUrl) {
-        console.log(URL.createObjectURL(audioUrl)); // 출력된 링크에서 녹음된 오디오 확인 가능
-        setSound(URL.createObjectURL(audioUrl));
-      }
-      // File 생성자를 사용해 파일로 변환
-      const sound = new File([audioUrl], "soundBlob", { lastModified: new Date().getTime(), type: "audio" });
-      console.log(sound); // File 정보 출력
-      sendAudio(sound)
-    }, [audioUrl]);
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [audioURL, setAudioURL] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [recorder, setRecorder] = useState(null);
 
-    const sendAudio = (file) => {
-        if (file == null) return;
-        let filename = "test2" + ".wav";
-        let fd = new FormData();
-        fd.append('data', file, filename);
-    
-        axios.post(`https://api.interview-please.ml/habit?name=${filename}`, fd).then((res)=>{
-          console.log(res)
-        }).catch((err)=>{
-          console.log(err)
-        })
-    }
-    
-    const play = ()=>{
-      const audio = new Audio(sound);
-      audio.loop = false;
-      audio.volume = 1;
-      audio.play();
+  useEffect(() => {
+    // Lazily obtain recorder first time we're recording.
+    if (recorder === null) {
+      if (isRecording) {
+        requestRecorder().then(setRecorder, console.error);
+      }
+      return;
     }
 
-    return (
-      <>
-        <button onClick={onRec ? onRecAudio : offRecAudio}>녹음</button>
-        <button onClick={onSubmitAudioFile}>결과 확인</button>
-        <button onClick={play}>재생</button>
-      </>
-    );
+    // Manage recorder state.
+    if (isRecording) {
+      recorder.start();
+    } else {
+      recorder.stop();
+    }
+
+    // Obtain the audio when ready.
+    const handleData = e => {
+      console.log(e.data);
+      setAudioBlob(e.data);
+      setAudioURL(URL.createObjectURL(e.data));
+    };
+
+    recorder.addEventListener("dataavailable", handleData);
+    return () => recorder.removeEventListener("dataavailable", handleData);
+  }, [recorder, isRecording]);
+
+  const startRecording = () => {
+    setIsRecording(true);
   };
 
-  export default AudioRecord;
+  const stopRecording = () => {
+    setIsRecording(false);
+  };
+
+  const sendAudio = () => {
+    if (audioBlob == null) return;
+    let filename = "test2" + ".webm";
+    let fd = new FormData();
+    fd.append('data', audioBlob, filename);
+
+    axios.post(`https://api.interview-please.ml/habit?name=${filename}`, fd).then((res)=>{
+      console.log(res)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  };
+
+  return (
+    <>
+      <audio src={audioURL} controls />
+      <button onClick={startRecording} disabled={isRecording}>
+        start recording
+      </button>
+      <button onClick={stopRecording} disabled={!isRecording}>
+        stop recording
+      </button>
+      <button onClick={sendAudio}>
+        제출
+      </button>
+    </>
+  );
+};
+
+export default AudioRecord;
