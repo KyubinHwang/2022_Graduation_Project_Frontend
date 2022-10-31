@@ -2,6 +2,12 @@ import React from 'react';
 import style from '../../screens/report/report.module.scss';
 
 function Partial() {
+
+    const customLanguage = [
+        "전반적으로 습관어 사용 빈도 수가 상당히 낮습니다! 이대로 답변을 진행할 수 있다면 면접에서도 긴장한 티나 당황한 티가 잘 드러나지 않을 확률이 높습니다.",
+        "습관어 사용 빈도 수가 매우 많습니다. 이는 면접관에게 긴장한 티나 당황한 티가 잘 드러날 수 있는 수치입니다. 개선을 위해서는 반복적인 연습이 필요합니다."
+    ]
+
     return(
         <div className={style.Evaluate}>
             <div className={style.contentEvaluate2}>
@@ -33,10 +39,18 @@ function Partial() {
                 </div>
                 <div className={style.detailContent}>
                     <p style={{fontWeight : 'bold', color : '#408CFF', fontSize : 35}}>습관어 처리</p>
-                    <label style={{fontWeight : 'bold', fontSize : 24}}>S&nbsp;</label><label style={{fontSize : 24}}>등급</label>
-                    <br/>
-                    <br/>
-                    <p>모든 질문에서 좋은 평가를 받았습니다. 본 프로그램에서 측정되는 습관어는 ‘음, 어, 살짝, 진짜' 등 으로 반복적인 단어가 발생하지 않았습니다. 계속 연습한다면 AI 면접에서 좋은 평가를 받으실 수 있습니다.</p>
+                    <p style={{fontWeight : 'bold', fontSize : 24}}>Top 1 '음'</p>
+                    <p style={{fontWeight : 'bold', fontSize : 18}}>20 회</p>
+                    <p style={{fontWeight : 'bold', fontSize : 24}}>Top 2 '아'</p>
+                    <p style={{fontWeight : 'bold', fontSize : 18}}>20 회</p>
+                    <p style={{fontWeight : 'bold', fontSize : 24}}>Top 3 '어'</p>
+                    <p style={{fontWeight : 'bold', fontSize : 18}}>20 회</p>
+                    <p style={{fontWeight : 'bold', fontSize : 24}}>총 평</p>
+                    <p style={{fontSize : 16}}>본 프로그램에서 측정되는 습관어는 '아', '아니', '그', '음', '어', '습', '엄'으로 반복적인 단어가 발견될시에 면접자의 습관어를 기록합니다.</p>
+                    <p style={{fontSize : 16}}>{customLanguage[0]}</p>
+                    <p style={{fontSize : 16}}>면접을 진행할 때에 가장 중요한 점은 면접자의 '자신감'입니다. 자신의 의견을 분명하게 전달할 수 있도록 자신감있는 말투와 표정을 거울을 통해 연습해주세요. 
+                        충분한 연습을 통해 AI 면접을 넘어 실제 면접관에게도 좋은 평가를 받을 수 있도록 지속적인 연습을 진행해주세요!</p>
+                    <p style={{fontSize : 16}}>면접을 부탁해는 면접자님의 합격을 기원합니다!!</p>
                 </div>
             </div>
         </div>
