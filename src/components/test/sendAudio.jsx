@@ -1,80 +1,93 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
+import AudioAnalyser from "react-audio-analyser";
 
-async function requestRecorder() {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  return new MediaRecorder(stream);
-}
+class AudioRecord extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: ""
+    };
+  }
 
-const AudioRecord = () => {
-  const [audioBlob, setAudioBlob] = useState(null);
-  const [audioURL, setAudioURL] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
-  const [recorder, setRecorder] = useState(null);
+  controlAudio(status) {
+    this.setState({
+      status
+    });
+  }
 
-  useEffect(() => {
-    // Lazily obtain recorder first time we're recording.
-    if (recorder === null) {
-      if (isRecording) {
-        requestRecorder().then(setRecorder, console.error);
+  changeScheme() {
+    this.setState({
+      audioType: "audio/wav"
+    });
+  }
+
+  componentDidMount() {
+    this.setState({
+      audioType: "audio/wav"
+    });
+  }
+
+  render() {
+    const { status, audioSrc, audioType } = this.state;
+    const temp = this.state;
+    const audioProps = {
+      audioType,
+      status,
+      audioSrc,
+      startCallback: e => {
+        console.log("succ start", e);
+      },
+      stopCallback: e => {
+        this.setState({
+          audioSrc: URL.createObjectURL(e),
+          temp : e
+        });
+        console.log("succ stop", e);
+      },
+      errorCallback: err => {
+        console.log("error", err);
       }
-      return;
-    }
-
-    // Manage recorder state.
-    if (isRecording) {
-      recorder.start();
-    } else {
-      recorder.stop();
-    }
-
-    // Obtain the audio when ready.
-    const handleData = e => {
-      console.log(e.data);
-      setAudioBlob(e.data);
-      setAudioURL(URL.createObjectURL(e.data));
     };
 
-    recorder.addEventListener("dataavailable", handleData);
-    return () => recorder.removeEventListener("dataavailable", handleData);
-  }, [recorder, isRecording]);
+    const sendAudio = () => {
+      console.log(temp.temp)
+      if (temp.temp == null) return;
+      let filename = "test2" + ".wav";
+      let fd = new FormData();
+      fd.append('data', temp.temp, filename);
+      axios.post(`https://api.interview-please.ml/habit?name=${filename}`, fd).then((res)=>{
+        console.log(res)
+      }).catch((err)=>{
+        console.log(err)
+      })
+    };
 
-  const startRecording = () => {
-    setIsRecording(true);
-  };
 
-  const stopRecording = () => {
-    setIsRecording(false);
-  };
-
-  const sendAudio = () => {
-    if (audioBlob == null) return;
-    let filename = "test2" + ".webm";
-    let fd = new FormData();
-    fd.append('data', audioBlob, filename);
-
-    axios.post(`https://api.interview-please.ml/habit?name=${filename}`, fd).then((res)=>{
-      console.log(res)
-    }).catch((err)=>{
-      console.log(err)
-    })
-  };
-
-  return (
-    <>
-      <audio src={audioURL} controls />
-      <button onClick={startRecording} disabled={isRecording}>
-        start recording
-      </button>
-      <button onClick={stopRecording} disabled={!isRecording}>
-        stop recording
-      </button>
-      <button onClick={sendAudio}>
-        제출
-      </button>
-    </>
-  );
-};
+    return (
+      <div>
+        <AudioAnalyser {...audioProps}>
+          <div className="btn-box">
+            <button
+              className="btn"
+              onClick={() => this.controlAudio("recording")}
+            >
+              Start
+            </button>
+            <button
+              className="btn"
+              onClick={() => this.controlAudio("inactive")}
+            >
+              Stop
+            </button>
+          </div>
+        </AudioAnalyser>
+        <button onClick={sendAudio}>
+          제출
+        </button>
+      </div>
+    );
+  }
+}
 
 export default AudioRecord;
