@@ -20,7 +20,7 @@ let videoBlob = null;
 const UseTestTimer = () => {
     const videoRef = useRef(null);
     const [question, setQuestion] = useState(1);
-    const [second, setSecond] = useState(3);
+    const [second, setSecond] = useState(10);
     const [secondCheck, setSecondCheck] = useState(false);
     const [thinking, setThinking] = useState(true);
     const [endShow, setEndShow] = useState(false);
@@ -137,7 +137,7 @@ const UseTestTimer = () => {
                     VideoCaptureEnd();
                     controlAudio("inactive");
                     setQuestion(question + 1);
-                    setSecond(3);
+                    setSecond(10);
                     setThinking(true);
                     setSecondCheck(!secondCheck);
                 }
@@ -172,14 +172,14 @@ const UseTestTimer = () => {
                 if(secondCheck){
                     VideoCaptureEnd();
                     controlAudio("inactive");
-                    setSecond(3);
+                    setSecond(10);
                     setThinking(true);
                     setQuestion(question + 1);
                 }
                 else{
                     VideoCaptureStart();
                     controlAudio("recording");
-                    setSecond(9);
+                    setSecond(30);
                     setThinking(false);
                 }
             }

@@ -52,8 +52,8 @@
 #videoElement
 {
     transform: rotateY(180deg);
-    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:rotateY(180deg); /* Firefox */
+    width: 55vw;
+    border: 10px solid #bedafc;
 }
 .cameraScreen{
     display: flex;
