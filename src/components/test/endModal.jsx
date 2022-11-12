@@ -4,7 +4,8 @@ import style from '../../screens/test/test.module.scss';
 
 const EndModal = (props) => {
     const goTo = () => {
-        window.location.assign('./report')
+        localStorage.setItem("contents", JSON.stringify(props.contents));
+        window.location.assign('./report');
     };
 
     return(
@@ -19,8 +20,8 @@ const EndModal = (props) => {
         </Modal.Body>
         <Modal.Footer
             style={{
-            display: "flex",
-            justifyContent: "center",
+                display: "flex",
+                justifyContent: "center",
             }}
         >
             <button onClick={goTo} className={style.button}>결과보기</button>

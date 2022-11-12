@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
-// const url = ''
+const url = 'https://api.interview-please.ml/result?name='
 
 const useReportResult = () => {
-    const [result, setResult] = useState(0);
+    const [result, setResult] = useState({});
 
     useEffect(() => {
-        // axios.get(url)
-        // .then(res => {
-        //     // setResult(res.data.text);
-        // }).catch(err => {
-        //     console.log(err)
-        // });
+        const name = localStorage.getItem('name');
+        axios.get(url + `${name}`)
+        .then((res)=>{
+          console.log(res.data)
+          setResult(res.data)
+        }).catch((err)=>{
+          console.log(err)
+        });
     },[])
 
     return {result};
