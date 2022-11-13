@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useRef, useEffect} from 'react';
 import guide1 from '../../assets/images/guide1.svg';
 import style from './check.module.scss';
 import Webcam from 'react-webcam';
@@ -22,7 +22,8 @@ function Check () {
     <div className={style.box}>
       <img src={guide1} className={style.currentPage} alt="profile" />
       {
-        isShowVideo ? <Webcam className={style.cameraBox} audio videoConstraints={videoConstraints} screenshotFormat="image/jpeg" mirrored />
+        isShowVideo 
+        ? <Webcam className={style.cameraBox} audio videoConstraints={videoConstraints} screenshotFormat="image/jpeg" mirrored />
         : <div className={style.emptySpace}/>
       }
       <div className={style.checkbox}>

@@ -52,7 +52,8 @@ const UseTestTimer = () => {
         videoRecorder.onstop = () => {
           videoBlob = new Blob(videoData, {type: "video/webm"});
           recordedVideoURL = window.URL.createObjectURL(videoBlob); // 이벤트 실행 시에 서버로 파일 POST  
-          sendAvi(videoBlob);
+          sendGaze(videoBlob);
+          sendFace(videoBlob);
           console.log(videoBlob)
           console.log('녹화 완료');
         }
@@ -67,11 +68,10 @@ const UseTestTimer = () => {
       }
     };
   
-    
 
-    const sendAvi = (blob) => {
+    const sendGaze = (blob) => {
       if (blob == null) return;
-      let filename = `test${question}` + ".webm";  
+      let filename = `gaze${question}` + ".webm";  
       let fd = new FormData();
       fd.append('data', blob, filename);
   
@@ -82,10 +82,22 @@ const UseTestTimer = () => {
       })
     }
 
+    const sendFace = (blob) => {
+      if (blob == null) return;
+      let filename = `face${question}` + ".webm";  
+      let fd = new FormData();
+      fd.append('data', blob, filename);
+  
+      axios.post(`https://emotion.interview-please.ml/emotion?name=${name}`, fd).then((res)=>{
+        console.log(res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
+
     const [status, setStatus] = useState('');
     const [audioSrc, setAudioSrc] = useState('');
     const [audioType, setAudioType] = useState('');
-    let [countAudio, setCountAudio] = useState(0)
 
     const controlAudio = (status) => {
       setStatus(status);
@@ -133,7 +145,7 @@ const UseTestTimer = () => {
                 // 60초이상 지난 후 지나갈 수 있다는 팝업 창 잠시 띄우기
             }
             else{
-                if(question < 5){
+                if(question < 3){
                     VideoCaptureEnd();
                     controlAudio("inactive");
                     setQuestion(question + 1);
@@ -160,7 +172,7 @@ const UseTestTimer = () => {
         //url 뒤에 url + question으로 요청시킬거
         
 
-        if(question === 5 && second === -1 && !thinking){
+        if(question === 3 && second === -1 && !thinking){
             setEndShow(true);
             setSecond(0);
             VideoCaptureEnd();
@@ -179,7 +191,7 @@ const UseTestTimer = () => {
                 else{
                     VideoCaptureStart();
                     controlAudio("recording");
-                    setSecond(30);
+                    setSecond(60);
                     setThinking(false);
                 }
             }
