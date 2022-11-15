@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import style from '../../screens/report/report.module.scss';
 import { SpinnerCircular } from 'spinners-react';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+
 
 function Partial() {
 
@@ -70,6 +72,25 @@ function Partial() {
 
         return () => clearInterval(timer);
     }, [loading]);
+    
+    const data = [
+        {
+            name: '',
+            긍정적표정비율: 0,
+        },
+        {
+            name: '문항 1',
+            긍정적표정비율: 0.4,
+        },
+        {
+            name: '문항 2',
+            긍정적표정비율: 0.6,
+        },
+        {
+            name: '문항 3',
+            긍정적표정비율: 0.8,
+        },
+      ];
 
     return(
         <>
@@ -102,6 +123,25 @@ function Partial() {
                         }
                         <br/>
                         <p style={{fontWeight : 'bold', fontSize : 24}}>총 평</p>
+                        <LineChart
+                            width={500}
+                            height={300}
+                            data={data}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="긍정적표정비율" stroke="#0073fe" activeDot={{ r: 8 }} />
+                        </LineChart>
+                        <br/>
                         {
                             <>
                                 <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[1]}</p>
@@ -132,6 +172,25 @@ function Partial() {
                         }
                         <br/>
                         <p style={{fontWeight : 'bold', fontSize : 24}}>총 평</p>
+                        <LineChart
+                            width={500}
+                            height={300}
+                            data={data}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="긍정적표정비율" stroke="#0073fe" activeDot={{ r: 8 }} />
+                        </LineChart>
+                        <br/>
                         {
                             <>
                                 <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[2]}</p>
@@ -161,6 +220,25 @@ function Partial() {
                         }
                         <br/>
                         <p style={{fontWeight : 'bold', fontSize : 24}}>총 평</p>
+                        <LineChart
+                            width={500}
+                            height={300}
+                            data={data}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="긍정적표정비율" stroke="#0073fe" activeDot={{ r: 8 }} />
+                        </LineChart>
+                        <br/>
                         {
                             result.habit_sum < 5 ? 
                             <>
