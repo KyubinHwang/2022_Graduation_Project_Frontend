@@ -35,20 +35,20 @@ function Partial() {
     const contents = JSON.parse(localStorage.getItem('contents'));
     
     const url = 'https://api.interview-please.ml/result?name=';
-    const fakeurl = 'https://api.interview-please.ml/gara_result?name=';
+    const num = [1, 2, 3];
     const [result, setResult] = useState();
     const [dataCheck, setDataCheck] = useState(false);
-    const [loading, setLoading] = useState(0)
 
     useEffect(() => {
         const name = localStorage.getItem('name');
-        axios.get(fakeurl + `${name}`)
+        axios.get(url + `${name}`)
         .then((res)=>{
             if (res !== undefined){
-                if (res.data.gaze.length === 5){
+                if (res.data.gaze.length === 3){
                     setResult(res.data);
                     setDataCheck(true);
-                    console.log(result)
+                    console.log(result);
+
                 }
                 else {
                     setDataCheck(false);
@@ -60,42 +60,10 @@ function Partial() {
     },[dataCheck]);
 
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setLoading(loading => loading + 1);
-            console.log(loading)
-        }, 1000);
-    
-        if(loading === 3){
-            clearInterval(timer);
-        }
-
-        return () => clearInterval(timer);
-    }, [loading]);
-    
-    const data = [
-        {
-            name: '',
-            긍정적표정비율: 0,
-        },
-        {
-            name: '문항 1',
-            긍정적표정비율: 0.4,
-        },
-        {
-            name: '문항 2',
-            긍정적표정비율: 0.6,
-        },
-        {
-            name: '문항 3',
-            긍정적표정비율: 0.8,
-        },
-      ];
-
     return(
         <>
         {
-            loading === 3 
+            dataCheck === true
             ?
             <div className={style.Evaluate}>
                 <div className={style.contentEvaluate2}>
@@ -106,13 +74,13 @@ function Partial() {
                         <hr/>
                         <p style={{fontWeight : 'bold', fontSize : 24}}>총 평가 : <label style={{color:'#1E84FD'}}>{result.emotion_grade}</label></p>
                         <p style={{fontSize : 16}}>면접 응답을 진행한 동안 측정된 영상에 대한 표정 분석 결과를 반환합니다. '화남', '혐오감', '두려움', '행복', '슬픔', '놀람', '중립'과 같은
-                        표정들을 분석하고 이에 대한 비율을 계산하여 응답 진행중 '행복' 이외에 표정 비중이 높은 문항을 기록합니다.
+                        표정들을 분석하고 이에 대한 비율을 계산하여 응답 진행중 '행복' 이외에 표정 비중이 높은 문항을 기록합니다. (emotion_ratio의 비율이 높을수록 좋은 결과에 가깝습니다.)
                         </p>
                         <br/>
                         <p style={{fontWeight : 'bold', fontSize : 20}}>👇 연습이 필요한 문항 👇</p>
                         {
                             result.emotion.map((res, index)=>{
-                                if (res.ratio > 0.8){
+                                if (res.emotion_ratio < 0.3){
                                     return(
                                         <>
                                             <p style={{fontWeight : 'bold', fontSize : 16}}>{index + 1}번째 문항 - {contents[index]}</p>
@@ -126,7 +94,7 @@ function Partial() {
                         <LineChart
                             width={500}
                             height={300}
-                            data={data}
+                            data={result.emotion}
                             margin={{
                                 top: 5,
                                 right: 30,
@@ -135,17 +103,27 @@ function Partial() {
                             }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey={(v)=> `문항 ${result.emotion.indexOf(v) + 1}`}/>
                             <YAxis />
                             <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="긍정적표정비율" stroke="#0073fe" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="emotion_ratio" stroke="#0073fe" activeDot={{ r: 8 }} />
                         </LineChart>
                         <br/>
                         {
+                            result.emotion_grade === '상' ?
+                            <>
+                                <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[0]}</p>
+                                <p style={{fontSize : 16}}>{customFace[0]}</p>
+                            </>
+                            : result.emotion_grade === '중' ?
                             <>
                                 <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[1]}</p>
                                 <p style={{fontSize : 16}}>{customFace[1]}</p>
+                            </>
+                            :
+                            <>
+                                <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[2]}</p>
+                                <p style={{fontSize : 16}}>{customFace[2]}</p>
                             </>
                         }
                         <br/>
@@ -155,7 +133,7 @@ function Partial() {
                         <hr/>
                         <p style={{fontWeight : 'bold', fontSize : 24}}>총 평가 : <label style={{color:'#1E84FD'}}>{result.gaze_grade}</label></p>
                         <p style={{fontSize : 16}}>면접 응답을 진행한 동안 측정된 영상에 대한 시선처리 결과를 반환합니다. 중앙을 잘 응시하지 못하여 연습이 필요한 문항을 저장하여
-                            부족했던 답변에 대해 연습할 수 있도록 제공합니다.
+                            부족했던 답변에 대해 연습할 수 있도록 제공합니다. (ratio의 비율이 0.01과 가깝고 작을수록 좋은 결과에 가깝습니다.)
                         </p>
                         <br/>
                         <p style={{fontWeight : 'bold', fontSize : 20}}>👇 연습이 필요한 문항 👇</p>
@@ -175,7 +153,7 @@ function Partial() {
                         <LineChart
                             width={500}
                             height={300}
-                            data={data}
+                            data={result.gaze}
                             margin={{
                                 top: 5,
                                 right: 30,
@@ -184,14 +162,24 @@ function Partial() {
                             }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey={(v)=> `문항 ${result.gaze.indexOf(v) + 1}`}/>
                             <YAxis />
                             <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="긍정적표정비율" stroke="#0073fe" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="ratio" stroke="#0073fe" activeDot={{ r: 8 }} />
                         </LineChart>
                         <br/>
                         {
+                            result.gaze_grade === '상' ?
+                            <>
+                                <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[0]}</p>
+                                <p style={{fontSize : 16}}>{customGaze[0]}</p>
+                            </>
+                            : result.gaze_grade === '중' ?
+                            <>
+                                <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[1]}</p>
+                                <p style={{fontSize : 16}}>{customGaze[1]}</p>
+                            </>
+                            :
                             <>
                                 <p style={{fontWeight : 'bold', fontSize : 20}}>{custom[2]}</p>
                                 <p style={{fontSize : 16}}>{customGaze[2]}</p>
@@ -223,7 +211,7 @@ function Partial() {
                         <LineChart
                             width={500}
                             height={300}
-                            data={data}
+                            data={result.habit}
                             margin={{
                                 top: 5,
                                 right: 30,
@@ -232,11 +220,10 @@ function Partial() {
                             }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey='0' />
                             <YAxis />
                             <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="긍정적표정비율" stroke="#0073fe" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey={v => `발견 횟수 : ${v[1]}`} stroke="#0073fe" activeDot={{ r: 8 }} />
                         </LineChart>
                         <br/>
                         {
