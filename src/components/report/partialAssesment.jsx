@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import style from '../../screens/report/report.module.scss';
 import { SpinnerCircular } from 'spinners-react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
 
 function Partial() {
@@ -35,29 +35,32 @@ function Partial() {
     const contents = JSON.parse(localStorage.getItem('contents'));
     
     const url = 'https://api.interview-please.ml/result?name=';
-    const num = [1, 2, 3];
     const [result, setResult] = useState();
     const [dataCheck, setDataCheck] = useState(false);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         const name = localStorage.getItem('name');
-        axios.get(url + `${name}`)
-        .then((res)=>{
-            if (res !== undefined){
-                if (res.data.gaze.length === 3){
+        const id = setInterval(() => {
+            setCount(count => count + 1); 
+            axios.get(url + `${name}`)
+            .then((res)=>{
+                if(res.data.gaze.length === 3){
                     setResult(res.data);
                     setDataCheck(true);
-                    console.log(result);
+                }
+            }).catch((err)=>{
+                console.log(err)
+            });
+      }, 1000);
 
-                }
-                else {
-                    setDataCheck(false);
-                }
-            }
-        }).catch((err)=>{
-          console.log(err)
-        });
-    },[dataCheck]);
+      if (dataCheck) {
+        clearInterval(id);
+        console.log(result);
+      }
+
+      return () => clearInterval(id);
+    }, [count, result, dataCheck]);
 
 
     return(
@@ -83,8 +86,13 @@ function Partial() {
                                 if (res.emotion_ratio < 0.3){
                                     return(
                                         <>
-                                            <p style={{fontWeight : 'bold', fontSize : 16}}>{index + 1}번째 문항 - {contents[index]}</p>
+                                            <p style={{fontWeight : 'bold', fontSize : 16}} key={res}>{index + 1}번째 문항 - {contents[index]}</p>
                                         </>
+                                    );
+                                }
+                                else{
+                                    return(
+                                        <></>
                                     );
                                 }
                             })
@@ -142,8 +150,13 @@ function Partial() {
                                 if (res.ratio > 0.05){
                                     return(
                                         <>
-                                            <p style={{fontWeight : 'bold', fontSize : 16}}>{index + 1}번째 문항 - {contents[index]}</p>
+                                            <p style={{fontWeight : 'bold', fontSize : 16}} key={res}>{index + 1}번째 문항 - {contents[index]}</p>
                                         </>
+                                    );
+                                }
+                                else{
+                                    return(
+                                        <></>
                                     );
                                 }
                             })
@@ -204,6 +217,11 @@ function Partial() {
                                         </>
                                     );
                                 }
+                                else{
+                                    return(
+                                        <></>
+                                    );
+                                }
                             })
                         }
                         <br/>
@@ -223,7 +241,7 @@ function Partial() {
                             <XAxis dataKey='0' />
                             <YAxis />
                             <Tooltip />
-                            <Line type="monotone" dataKey={v => `발견 횟수 : ${v[1]}`} stroke="#0073fe" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey={v => v[1]} stroke="#0073fe" activeDot={{ r: 8 }} />
                         </LineChart>
                         <br/>
                         {

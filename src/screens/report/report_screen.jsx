@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import guide4 from '../../assets/images/guide4.svg';
 import style from './report.module.scss';

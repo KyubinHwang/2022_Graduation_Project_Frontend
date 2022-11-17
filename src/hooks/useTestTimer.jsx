@@ -14,7 +14,6 @@ const CONSTRAINTS = { video: true };
 let videoMediaStream = null;
 
 let videoRecorder = null;
-let recordedVideoURL = null;
 let videoBlob = null;
 
 const UseTestTimer = () => {
@@ -51,7 +50,6 @@ const UseTestTimer = () => {
         } 
         videoRecorder.onstop = () => {
           videoBlob = new Blob(videoData, {type: "video/webm"});
-          recordedVideoURL = window.URL.createObjectURL(videoBlob); // 이벤트 실행 시에 서버로 파일 POST  
           sendGaze(videoBlob);
           sendFace(videoBlob);
           console.log(videoBlob)
@@ -71,7 +69,7 @@ const UseTestTimer = () => {
 
     const sendGaze = (blob) => {
       if (blob == null) return;
-      let filename = `gaze${question}` + ".webm";  
+      let filename = `gaze${question}.webm`;  
       let fd = new FormData();
       fd.append('data', blob, filename);
   
@@ -84,7 +82,7 @@ const UseTestTimer = () => {
 
     const sendFace = (blob) => {
       if (blob == null) return;
-      let filename = `face${question}` + ".webm";  
+      let filename = `face${question}.webm`;  
       let fd = new FormData();
       fd.append('data', blob, filename);
   
@@ -116,7 +114,7 @@ const UseTestTimer = () => {
         console.log("녹음 종료");
         // 통신 진행하기
         if (e == null) return;
-        let filename = "test2" + ".wav";
+        let filename = "test2.wav";
         let fd = new FormData();
         fd.append('data', e, filename);
         axios.post(`https://api.interview-please.ml/habit?name=${name}`, fd).then((res)=>{
@@ -132,7 +130,7 @@ const UseTestTimer = () => {
 
     useEffect(() => {
       setAudioType('audio/wav');
-    });
+    }, [audioType]);
 
     const url = 'https://api.interview-please.ml/question?no='
 
