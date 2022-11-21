@@ -147,7 +147,7 @@ function Partial() {
                         <p style={{fontWeight : 'bold', fontSize : 20}}>👇 연습이 필요한 문항 👇</p>
                         {
                             result.gaze.map((res, index)=>{
-                                if (res.ratio > 0.05){
+                                if (res.ratio > 0.3){
                                     return(
                                         <>
                                             <p style={{fontWeight : 'bold', fontSize : 16}} key={res}>{index + 1}번째 문항 - {contents[index]}</p>
